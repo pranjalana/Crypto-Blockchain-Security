@@ -1,39 +1,32 @@
-# BlockSig: Cryptographic Foundations and Blockchain Security Demonstration
+# BlockSig: A Hands-On Demonstration of Cryptographic Foundations and Blockchain Security
 
-This repository contains the implementation demonstration accompanying our SE6003 survey paper, **“Cryptographic Foundations of Blockchain Security: A Comparative Survey of Bitcoin, Ethereum and XRP Ledger”** (final title to be confirmed).
+This repository contains the implementation demonstration accompanying our SE6003 survey paper, **“Cryptographic Foundations of Blockchain Security: A Comparative Survey of Bitcoin, Ethereum and XRP Ledger”** (working title; final title to be confirmed).
 
-The project extends an original educational implementation of ECDSA signatures and a Bitcoin-style UTXO ledger. The extended version retains the original three experiments and adds four demonstrations covering blockchain structure, Merkle Trees, Proof of Work, and a simplified multi-node consensus simulation.
+The project demonstrates selected cryptographic and blockchain-security mechanisms through interactive and command-line experiments. It brings together ECDSA signatures, transaction validation, a Bitcoin-style UTXO ledger, blockchain structure, Merkle Trees, Proof of Work, and a simplified multi-node consensus simulation.
 
 > **Educational scope only:** This project is not a production blockchain, cryptocurrency, wallet, or secure transaction system. Do not use real private keys or real funds.
 
-## 1. Project overview
+## 1. Project Overview
 
-The purpose of the implementation is to make selected cryptographic and blockchain-security concepts from the survey observable through executable experiments.
+The implementation makes selected cryptographic and blockchain-security concepts observable through executable experiments.
 
-### Original experiments retained from the base repository
-
-| No. | Experiment | Demonstration | Security concept |
+| No. | Demonstration | What it does | Security concept |
 |---|---|---|---|
-| 1 | ECDSA signature verification and tampering | Alice signs a transaction. The recipient, amount, or signature is modified and verification is repeated. | A signature authenticates the signed message; changing signed data causes verification to fail. |
-| 2 | Conflicting transactions / double-spending | Two validly signed transactions attempt to spend the same UTXO. | Signature validity alone does not prevent double-spending. Ledger rules must check whether an output has already been spent. |
-| 3 | ECDSA nonce reuse | Two different messages are signed using the same nonce, and the private key is recovered. | Reusing an ECDSA nonce can reveal the signing private key. |
-
-The original GUI provides Automatic and Try it modes for these experiments. The interactive controls use the same underlying Python implementation as the terminal demonstrations.
-
-### Four features added in the extended repository
-
-| No. | Feature | Demonstration | Security concept |
-|---|---|---|---|
-| 4 | Blockchain structure and hash linking | Creates a genesis block and subsequent blocks containing transactions, a previous-block hash, a Merkle root, and a block hash. | Changing block data changes its calculated hash and can cause chain validation to fail. |
+| 1 | ECDSA Signature Verification and Tampering | Alice signs a transaction. The recipient, amount, or signature is modified and verification is repeated. | A signature authenticates the signed message; changing signed data causes verification to fail. |
+| 2 | Conflicting Transactions / Double-Spending | Two validly signed transactions attempt to spend the same UTXO. | Signature validity alone does not prevent double-spending. Ledger rules must check whether an output has already been spent. |
+| 3 | ECDSA Nonce Reuse | Two different messages are signed using the same nonce, and the private key is recovered. | Reusing an ECDSA nonce can reveal the signing private key. |
+| 4 | Blockchain Structure and Hash Linking | Creates a genesis block and subsequent blocks containing transactions, a previous-block hash, a Merkle root, and a block hash. | Changing block data changes its calculated hash and can cause chain validation to fail. |
 | 5 | Merkle Tree | Hashes transactions, calculates a Merkle root, generates an inclusion proof, and verifies the proof. | A transaction can be checked against a Merkle root using a proof; a modified transaction fails the original proof. |
 | 6 | Proof of Work | Searches for a nonce that produces a SHA-256 block hash with a configured number of leading zeroes. | Mining requires repeated hashing; higher difficulty generally increases expected work. |
-| 7 | Multi-node consensus simulation | Three logical nodes create competing chains, exchange chain information, and adopt a longer valid chain. | Nodes can converge on the same valid chain under the simplified longest-valid-chain rule implemented here. |
+| 7 | Multi-Node Consensus Simulation | Three logical nodes create competing chains, exchange chain information, and adopt a longer valid chain. | Nodes can converge on the same valid chain under the simplified longest-valid-chain rule implemented here. |
 
-## 2. How the demonstrations fit together
+The browser interface provides interactive controls for the demonstrations. These controls invoke the Python implementation and display the resulting outputs.
 
-The four added features represent different stages or components of a simplified blockchain workflow:
+## 2. How the Demonstrations Fit Together
 
-1. Transactions are represented as data. In the original experiments, ECDSA signatures demonstrate transaction authorisation and integrity.
+The demonstrations illustrate different components of a simplified blockchain workflow:
+
+1. Transactions are represented as data. ECDSA signatures demonstrate transaction authorisation and integrity.
 2. Transactions are hashed and combined into a Merkle Tree. The Merkle root is stored in a block.
 3. Blocks contain transaction data, the Merkle root, a previous-block hash, a nonce, and other metadata.
 4. Proof of Work searches for a nonce that makes the block hash satisfy the configured difficulty.
@@ -42,20 +35,20 @@ The four added features represent different stages or components of a simplified
 
 These mechanisms provide different security properties and are not interchangeable. For example, a valid digital signature does not by itself prevent double-spending, and hash linking alone does not establish agreement among distributed participants.
 
-## 3. Technology and cryptographic mechanisms
+## 3. Technology and Cryptographic Mechanisms
 
 - **Programming language:** Python
 - **Web interface:** HTML, CSS, and JavaScript
 - **Local web server:** Python standard-library `http.server`
-- **Hashing in the added block and Merkle modules:** SHA-256
-- **Digital signatures in the original experiments:** ECDSA over secp256k1
+- **Hashing:** SHA-256
+- **Digital signatures:** ECDSA over secp256k1
 - **Ledger model:** Simplified Bitcoin-style UTXO ledger
 - **Automated testing:** pytest
 - **ECDSA cross-checking:** `cryptography` / OpenSSL in the test suite
 
-The original implementation includes elliptic-curve arithmetic, ECDSA signing and verification, deterministic nonce support based on RFC 6979, low-S normalisation, and a nonce-reuse key-recovery demonstration. Refer to the source modules and standards for implementation details.
+The implementation includes elliptic-curve arithmetic, ECDSA signing and verification, deterministic nonce support based on RFC 6979, low-S normalisation, and a nonce-reuse key-recovery demonstration.
 
-## 4. Architecture and project structure
+## 4. Architecture and Project Structure
 
 ```text
 blockchaincodes/
@@ -66,10 +59,10 @@ blockchaincodes/
 │   ├── ecdsa.py           # ECDSA signing and verification
 │   ├── attacks.py         # ECDSA nonce-reuse key recovery
 │   ├── ledger.py          # Simplified UTXO ledger and transactions
-│   ├── experiments.py     # Original three experiments
+│   ├── experiments.py     # Cryptographic and ledger demonstrations
 │   ├── blockchain.py      # Block structure, hash linking, PoW, validation
 │   ├── merkle.py          # Transaction hashes, Merkle root and proofs
-│   └── consensus.py       # Logical nodes and simplified chain synchronisation
+│   └── consensus.py       # Logical nodes and chain synchronisation
 │
 ├── tests/
 │   ├── test_ec.py
@@ -86,10 +79,10 @@ blockchaincodes/
 │   └── index.html         # Interactive browser interface
 │
 ├── results/
-│   └── demo_results.md    # Recorded results from original experiments
+│   └── demo_results.md    # Recorded demonstration results
 │
 ├── app.py                 # Local HTTP server and JSON API
-├── demo.py                # Original terminal demonstrations
+├── demo.py                # Command-line demonstrations
 ├── blockchain_demo.py     # Blockchain demonstration
 ├── merkle_demo.py         # Merkle Tree demonstration
 ├── pow_demo.py            # Proof of Work demonstration
@@ -101,7 +94,7 @@ blockchaincodes/
 └── README.md
 ```
 
-### Main source modules
+### Main Source Modules
 
 | File | Responsibility |
 |---|---|
@@ -109,32 +102,32 @@ blockchaincodes/
 | `blocksig/ecdsa.py` | ECDSA key generation, signing, and verification. |
 | `blocksig/attacks.py` | Demonstrates private-key recovery when an ECDSA nonce is reused. |
 | `blocksig/ledger.py` | Signed transactions, UTXO tracking, and double-spend checks. |
-| `blocksig/experiments.py` | Logic for the original three experiments and their interactive controls. |
+| `blocksig/experiments.py` | Logic for the cryptographic and ledger demonstrations and their interactive controls. |
 | `blocksig/blockchain.py` | Block data structure, SHA-256 block hashes, mining, and chain validation. |
 | `blocksig/merkle.py` | Transaction hashing, Merkle-root calculation, proof generation, and proof verification. |
 | `blocksig/consensus.py` | Logical node objects and longest-valid-chain synchronisation. |
 | `app.py` | Serves the GUI and connects browser requests to Python functions through JSON API routes. |
-| `web/index.html` | Browser interface for the original experiments and four added features. |
+| `web/index.html` | Browser interface for the demonstrations. |
 
-## 5. API routes
+## 5. API Routes
 
 The local application exposes these routes:
 
 | Method | Route | Purpose |
 |---|---|---|
 | GET | `/` | Serves the web interface. |
-| GET | `/api/run?exp=all` | Runs all original automatic experiments. |
-| GET | `/api/run?exp=1` (or 2 or 3) | Runs one original automatic experiment. |
-| POST | `/api/sign` | Signs a transaction for the interactive signature experiment. |
+| GET | `/api/run?exp=all` | Runs all automatic cryptographic and ledger demonstrations. |
+| GET | `/api/run?exp=1` (or 2 or 3) | Runs one automatic demonstration. |
+| POST | `/api/sign` | Signs a transaction for the interactive signature demonstration. |
 | POST | `/api/verify` | Verifies a transaction signature. |
-| POST | `/api/doublespend` | Runs the interactive double-spend experiment. |
-| POST | `/api/nonce` | Runs the interactive ECDSA nonce experiment. |
+| POST | `/api/doublespend` | Runs the interactive double-spend demonstration. |
+| POST | `/api/nonce` | Runs the interactive ECDSA nonce demonstration. |
 | POST | `/api/blockchain` | Runs the blockchain structure demonstration. |
 | POST | `/api/merkle` | Generates and verifies a Merkle inclusion proof. |
 | POST | `/api/pow` | Mines a block at the requested difficulty. |
 | POST | `/api/consensus` | Runs the three-node consensus simulation. |
 
-The four new GUI panels call the Python API. Their displayed results are generated by the implementation rather than being fixed example text.
+The GUI panels call the Python API. Their displayed results are generated by the implementation rather than being fixed example text.
 
 ## 6. Requirements
 
@@ -143,9 +136,9 @@ The four new GUI panels call the Python API. Their displayed results are generat
 - pip
 - A modern web browser
 
-Development and testing were performed on Windows 11 with Python 3.14.6 and pytest 9.2.0. Dependency compatibility should be checked if using a different Python version.
+Development and testing were performed on Windows 11 with Python 3.14.6 and pytest 9.2.0. Dependency compatibility should be checked when using a different Python version.
 
-## 7. Installation and setup
+## 7. Installation and Setup
 
 Run commands from the `blockchaincodes` directory.
 
@@ -188,7 +181,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-## 8. Run the web application
+## 8. Run the Web Application
 
 With the virtual environment activated:
 
@@ -202,19 +195,19 @@ Open the address printed in the terminal:
 http://localhost:8000
 ```
 
-The page contains the original three experiments and the four added blockchain demonstrations. Use the buttons in each panel to execute the corresponding Python logic and inspect the returned output.
+The page contains interactive demonstrations of ECDSA signatures, double-spending, nonce reuse, blockchain structure, Merkle Trees, Proof of Work, and multi-node consensus. Use the controls in each panel to execute the corresponding Python logic and inspect the returned output.
 
 Stop the local server with `Ctrl+C` in the terminal.
 
-## 9. Run terminal demonstrations
+## 9. Run Command-Line Demonstrations
 
-The original experiments can be run using:
+Run the cryptographic and ledger demonstrations using:
 
 ```bash
 python demo.py
 ```
 
-The four added features can be run independently:
+Run the blockchain demonstrations independently:
 
 ```bash
 python blockchain_demo.py
@@ -223,7 +216,7 @@ python pow_demo.py
 python consensus_demo.py
 ```
 
-## 10. Run automated tests
+## 10. Run Automated Tests
 
 Run the full test suite:
 
@@ -245,7 +238,7 @@ python -m pytest -q
 | `test_ecdsa.py` | 24 | ECDSA signing, verification, invalid signatures, and OpenSSL cross-checks. |
 | `test_attacks.py` | 15 | Nonce-reuse key recovery and related attack cases. |
 | `test_ledger.py` | 10 | Transaction validation, UTXO spending, double-spending, and overspending. |
-| `test_app.py` | 34 | Original web application routes and interactive experiment behaviour. |
+| `test_app.py` | 34 | Web application routes and interactive demonstration behaviour. |
 | `test_blockchain.py` | 8 | Genesis block, block addition, hash links, and tampering detection. |
 | `test_merkle.py` | 11 | Transaction hashing, Merkle roots, inclusion proofs, and tampering. |
 | `test_pow.py` | 9 | Mining, nonce changes, difficulty validation, and Proof of Work checks. |
@@ -254,7 +247,7 @@ python -m pytest -q
 
 The 131-test result is the recorded result from the development environment. Re-run the tests after cloning the repository to confirm the result in the current environment.
 
-## 11. Expected observations
+## 11. Expected Observations
 
 - **Signature tampering:** The original signed transaction verifies; changing signed transaction data causes verification to fail.
 - **Double-spending:** Two conflicting transactions can each have a valid signature, but the UTXO ledger must not accept both spends of the same output.
@@ -281,32 +274,31 @@ The implementation is intentionally simplified and should be interpreted within 
 
 These limitations must be considered when comparing the demonstration with deployed blockchain systems.
 
-## 13. Relationship to the survey research questions
+## 13. Relationship to the Survey Research Questions
 
 | Survey research question | Related implementation components | Contribution of the demonstration |
 |---|---|---|
-| RQ1: How do cryptographic primitives establish integrity, authenticity, and transaction authorisation in blockchain systems? | ECDSA experiments, transaction verification, hashing, and Merkle Tree. | Demonstrates signature verification, tampering detection, transaction hashes, and inclusion proofs. |
-| RQ2: How do cryptographic mechanisms interact with consensus protocols to establish a trustworthy distributed ledger? | UTXO double-spend experiment, block linking, Proof of Work, and consensus simulation. | Illustrates why signatures alone do not prevent double-spending and why ledger validation and agreement between nodes matter. |
-| RQ3: What security limitations remain despite cryptographic mechanisms? | ECDSA nonce-reuse experiment and tampering demonstrations. | Demonstrates nonce-reuse key compromise. Other limitations, such as private-key compromise, signature malleability, consensus attacks, and quantum threats, are analysed in the survey rather than fully implemented here. |
+| RQ1: How do cryptographic primitives establish integrity, authenticity, and transaction authorisation in blockchain systems? | ECDSA demonstrations, transaction verification, hashing, and Merkle Tree. | Demonstrates signature verification, tampering detection, transaction hashes, and inclusion proofs. |
+| RQ2: How do cryptographic mechanisms interact with consensus protocols to establish a trustworthy distributed ledger? | UTXO double-spend demonstration, block linking, Proof of Work, and consensus simulation. | Illustrates why signatures alone do not prevent double-spending and why ledger validation and agreement between nodes matter. |
+| RQ3: What security limitations remain despite cryptographic mechanisms? | ECDSA nonce-reuse demonstration and tampering experiments. | Demonstrates nonce-reuse key compromise. Other limitations, such as private-key compromise, signature malleability, consensus attacks, and quantum threats, are analysed in the survey rather than fully implemented here. |
 
-## 14. References
+## 14. Implementation References
 
-Implementation-related standards and specifications include:
+The following specifications are relevant to the cryptographic mechanisms described in this repository:
 
-- Standards for Efficient Cryptography Group, **SEC 1**, *Elliptic Curve Cryptography*.
-- Standards for Efficient Cryptography Group, **SEC 2**, *Recommended Elliptic Curve Domain Parameters*.
-- **RFC 6979**, *Deterministic Usage of the Digital Signature Algorithm (DSA) and Elliptic Curve Digital Signature Algorithm (ECDSA)*.
-- **BIP 146**, *Dealing with signature encoding malleability*.
-- **EIP-2**, *Homestead Hard-fork Changes*.
+- Certicom Research, **SEC 1: Elliptic Curve Cryptography**, Version 2.0, May 2009. https://www.secg.org/sec1-v2.pdf
+- Certicom Research, **SEC 2: Recommended Elliptic Curve Domain Parameters**, Version 2.0, January 2010. https://www.secg.org/sec2-v2.pdf
+- T. Pornin, **RFC 6979: Deterministic Usage of the Digital Signature Algorithm (DSA) and Elliptic Curve Digital Signature Algorithm (ECDSA)**, August 2013. https://www.rfc-editor.org/rfc/rfc6979.html
 
-The survey paper should contain the complete bibliography for all research sources. This README list is limited to implementation-related standards and specifications.
+The survey paper should contain the complete bibliography for all research sources. Cite each specification in the paper only where the corresponding mechanism is discussed or implemented.
 
-## 15. Authors and contributions
+## 15. Acknowledgements and Contributions
 
 This repository is maintained as part of the SE6003 Cryptography project.
 
-- **Original repository and implementation:** Credit the original author(s) of the base BlockSig repository.
-- **Extensions:** Add the names of the team member(s) responsible for the blockchain, Merkle Tree, Proof of Work, consensus, GUI integration, testing, and documentation extensions.
-- **Research:** Add the final survey-paper authors and their contributions.
+Any source code or design adapted from an existing repository must be acknowledged here in accordance with its licence and the course's academic-integrity requirements. The project contribution statement should identify the team members and their actual contributions to implementation, integration, testing, documentation, and research.
 
-Complete this section with the team's agreed names, GitHub usernames, and accurate contribution descriptions before submission.
+---
+
+**Project:** SE6003 Cryptography  
+**Scope:** Educational demonstration of cryptographic mechanisms and blockchain-security concepts
